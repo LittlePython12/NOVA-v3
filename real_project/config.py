@@ -1,0 +1,10 @@
+ASSISTANT_NAME = "Nova"
+WAKE_WORDS = ["nova", "hey nova"]
+
+VOICE = "en-GB-RyanNeural"
+TEMP_AUDIO_FILE = "temp_output.mp3"
+
+CITY = "Regina"
+SAMPLE_RATE = 44100
+DEFAULT_LISTEN_DURATION = 5
+COMMAND_LISTEN_DURATION = 6
