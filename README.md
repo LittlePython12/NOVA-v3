@@ -7,13 +7,12 @@ responding to voice commands and performing tasks hands-free.
 - 🎙️ Voice recognition and response
 - 🔊 Text-to-speech output
 - 🤖 Smart conversational replies
-- 📅 [Add any other features — weather, reminders, jokes, etc.]
+- 📅 
 
 ## Technologies Used
 - Python
 - SpeechRecognition
 - pyttsx3 / gTTS
-- [Any other libraries you used]
 
 ## Setup Instructions
 
@@ -39,5 +38,5 @@ responding to voice commands and performing tasks hands-free.
 
 ## Author
 Oluwatise Adegoke  
-[LinkedIn](https://www.linkedin.com/in/yourprofile) |
+[LinkedIn](https://www.linkedin.com/in/oluwatise-adegoke-107950338/) |
 [GitHub](https://github.com/LittlePython12)
