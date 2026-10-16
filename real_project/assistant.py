@@ -25,6 +25,7 @@ class NovaAssistant:
         self.default_listen_duration = DEFAULT_LISTEN_DURATION
         self.command_listen_duration = COMMAND_LISTEN_DURATION
         self.conversation_history = []
+        self.input_mode = "voice" # For voice or text commands
 
     def speak(self, text):
         speak(text, self.voice, self.temp_audio_file, self.name)
@@ -34,23 +35,58 @@ class NovaAssistant:
             duration = self.default_listen_duration
         return listen(duration, self.sample_rate)
 
+    def toggle_mode(self):
+        """Switch between voice and text input modes."""
+        if self.input_mode == "voice":
+            self.input_mode == "text"
+            print("\n Switched to TEXT mode. Type your commands.")
+            self.speak("Switched to text mode.")
+        else:
+            self.input_mode = "voice"
+            print("\n Switched to VOICE mode. Speak to me.")
+            self.speak("Switched to voice mode.")
+
     def run(self):
         self.speak(f"Hello. {self.name} is now online.")
+        print("\nTip: Type 'switch mode' anytime to toggle between voice and text input.\n")
 
         while True:
-            phrase = self.listen(self.default_listen_duration)
+            try:
+                # --- TEXT MODE ---
+                if self.input_mode == "text":
+                    command = input("You (text): ").strip().lower()
 
-            if phrase:
-                print(f"Detected phrase: {phrase}")
+                    if command in ["switch mode", "toggle mode", "voice mode"]:
+                        self.toggle_mode()
+                        continue
 
-            if contains_wake_word(phrase, self.wake_words):
-                command = extract_command_from_phrase(phrase, self.wake_words)
+                    if command:
+                        handle_command(self, command)
 
-                if command:
-                    handle_command(self, command)
+                # --- VOICE MODE ---
                 else:
-                    self.speak("Yes?")
-                    follow_up_command = self.listen(self.command_listen_duration)
-                    handle_command(self, follow_up_command)
+                    phrase = self.listen(self.default_listen_duration)
 
-            time.sleep(0.5)
+                    if phrase:
+                        print(f"Detected phrase: {phrase}")
+
+                    # Allow switching to text mode via voice
+                    if "switch to text" in phrase or "text mode" in phrase:
+                        self.toggle_mode()
+                        continue
+
+                    if contains_wake_word(phrase, self.wake_words):
+                        command = extract_command_from_phrase(phrase, self.wake_words)
+
+                        if command:
+                            handle_command(self, command)
+                        else:
+                            self.speak("Yes?")
+                            follow_up = self.listen(self.command_listen_duration)
+                            handle_command(self, follow_up)
+
+                    time.sleep(0.5)
+
+            except KeyboardInterrupt:
+                print("\Exiting Nova...")
+                break
